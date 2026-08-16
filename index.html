@@ -79,19 +79,32 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
+    <!-- Navbar Atas untuk Butang Home -->
+    <div class="w-full max-w-md mx-auto px-4 pt-4 flex justify-between items-center">
+        <a href="https://azam.ilmuniaga.com/portal_sistem_dart/" 
+           class="bg-[#1f2937] hover:bg-gray-700 text-gray-200 border border-gray-700 text-xs font-bold py-2 px-3 rounded-lg transition flex items-center gap-2 shadow-md">
+            <i class="fa-solid fa-house text-red-500"></i> Home
+        </a>
+        <div id="game-controls-top" class="hidden">
+            <button onclick="confirmEndGame()" 
+                    class="bg-red-900/40 hover:bg-red-800 text-red-300 border border-red-700/60 text-xs font-bold py-2 px-3 rounded-lg transition flex items-center gap-2 shadow-md">
+                <i class="fa-solid fa-flag-checkered"></i> Tamatkan Permainan
+            </button>
+        </div>
+    </div>
+
     <!-- Header dengan Logo TVET MARA -->
-    <header class="text-white p-4 text-center flex-none mt-6 flex flex-col items-center">
-        <!-- Logo Latar Putih (Saiz diselaraskan dengan Design 1) -->
+    <header class="text-white p-4 text-center flex-none mt-2 flex flex-col items-center">
+        <!-- Logo Latar Putih -->
         <div class="bg-white px-8 py-3 rounded-2xl mb-6 shadow-[0_0_15px_rgba(255,255,255,0.05)] inline-flex justify-center items-center w-56 md:w-64">
             <img src="logo tvet mara rembau1.jpg" alt="TVET MARA REMBAU" class="w-full object-contain">
         </div>
         
-        <!-- Tajuk Disusun Menegak (Seperti SISTEM DART PRO) -->
+        <!-- Tajuk Disusun Menegak -->
         <div class="flex flex-col items-center justify-center gap-1 mb-3">
             <h1 class="text-4xl md:text-5xl font-black uppercase tracking-wide text-white">
                 Double
             </h1>
-            <!-- Saiz CHECK OUT TRAINER dikecilkan di sini -->
             <h1 class="text-3xl md:text-4xl font-black uppercase tracking-wide text-[#e62e2e]">
                 Check Out Trainer
             </h1>
@@ -204,7 +217,7 @@
                 </div>
                 <h3 class="text-center text-gray-400 text-[0.7rem] font-bold tracking-[0.2em] mb-6 uppercase">Rekod Balingan</h3>
 
-                <!-- Reka Bentuk Baru Rekod Balingan -->
+                <!-- Reka Bentuk Rekod Balingan -->
                 <div class="flex justify-center items-stretch gap-6 px-2">
                     
                     <!-- Kiri: Kotak Dart -->
@@ -227,14 +240,18 @@
                     <div class="w-[1px] bg-gradient-to-b from-transparent via-gray-700 to-transparent"></div>
 
                     <!-- Kanan: Butang -->
-                    <div class="flex flex-col justify-center gap-4 w-1/2 items-start pl-2">
-                        <button id="btn-action-miss" onclick="recordThrow('miss')" class="border border-red-500/50 text-white w-28 py-4 rounded-md font-bold tracking-widest hover:bg-red-500/10 active:scale-95 transition-all text-sm">MISS</button>
-                        <button id="btn-action-cout" onclick="recordThrow('cout')" class="bg-[#e62e2e] text-white w-28 py-4 rounded-md font-bold tracking-widest hover:bg-red-700 shadow-[0_0_15px_rgba(220,38,38,0.3)] active:scale-95 transition-all text-sm">C/OUT</button>
+                    <div class="flex flex-col justify-center gap-3 w-1/2 items-start pl-2">
+                        <button id="btn-action-miss" onclick="recordThrow('miss')" class="border border-red-500/50 text-white w-28 py-3 rounded-md font-bold tracking-widest hover:bg-red-500/10 active:scale-95 transition-all text-sm">MISS</button>
+                        <button id="btn-action-cout" onclick="recordThrow('cout')" class="bg-[#e62e2e] text-white w-28 py-3 rounded-md font-bold tracking-widest hover:bg-red-700 shadow-[0_0_15px_rgba(220,38,38,0.3)] active:scale-95 transition-all text-sm">C/OUT</button>
+                        <!-- Button Padam (Undo) -->
+                        <button id="btn-action-undo" onclick="undoThrow()" class="bg-[#333b47] hover:bg-gray-600 text-gray-200 w-28 py-2.5 rounded-md font-bold tracking-wider active:scale-95 transition-all text-xs flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-rotate-left"></i> Padam
+                        </button>
                     </div>
 
                 </div>
 
-                <!-- Butang Selesai Giliran (Tersembunyi mulanya) -->
+                <!-- Butang Selesai Giliran -->
                 <div id="turn-complete-container" class="mt-8 hidden">
                     <button onclick="nextTurn()" class="w-full bg-white text-black py-3 rounded-md font-bold text-[0.9rem] hover:bg-gray-200 active:scale-95 transition-all uppercase tracking-widest shadow-[0_0_15px_rgba(255,255,255,0.2)]">Selesai Giliran</button>
                 </div>
@@ -256,8 +273,8 @@
         <!-- ==================== -->
         <div id="screen-result" class="hidden flex-col gap-6 w-full animate-fade-in pb-10">
             <div class="text-center">
-                <h1 class="text-3xl font-extrabold text-red-500 mb-2">🎉 TAHNIAH!</h1>
-                <p class="text-gray-300 uppercase tracking-widest text-sm">Semua Target Berjaya Diselesaikan</p>
+                <h1 id="result-title" class="text-3xl font-extrabold text-red-500 mb-2">🎉 TAHNIAH!</h1>
+                <p id="result-subtitle" class="text-gray-300 uppercase tracking-widest text-sm">Semua Target Berjaya Diselesaikan</p>
             </div>
 
             <div class="bg-[#1a1a1a] border border-yellow-600/50 rounded-xl p-6 shadow-2xl shadow-yellow-900/20 text-center relative overflow-hidden">
@@ -266,13 +283,10 @@
                 <h1 id="winner-name" class="text-4xl font-extrabold text-white uppercase">NAMA</h1>
             </div>
 
-            <!-- BAHAGIAN YANG DIPERBAIKI -->
             <div class="bg-[#1a1a1a] border border-gray-800 rounded-xl p-4 shadow-xl overflow-hidden w-full">
                 <h3 class="text-gray-400 font-bold uppercase tracking-widest text-sm mb-4 text-center">Statistik Akhir</h3>
                 
-                <!-- Tukar kepada layout yang lebih responsif (table -> div grid/flex pada mobile) -->
                 <div class="w-full text-left text-sm md:text-base">
-                    <!-- Header -->
                     <div class="hidden md:grid md:grid-cols-12 gap-2 border-b border-gray-700 text-gray-400 uppercase text-xs pb-3 font-bold">
                         <div class="col-span-3">Pemain</div>
                         <div class="col-span-2 text-center">Balingan</div>
@@ -281,7 +295,6 @@
                         <div class="col-span-3 text-right">Target Berjaya</div>
                     </div>
                     
-                    <!-- Body (Dijana melalui JS) -->
                     <div id="stats-body" class="flex flex-col gap-4 md:gap-0">
                         <!-- Dijana melalui JS -->
                     </div>
@@ -297,6 +310,25 @@
 
     </main>
 
+    <!-- Modal Pengesahan Tamatkan Permainan -->
+    <div id="modal-end-game" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-[#1a1a1a] border border-gray-800 rounded-2xl p-6 max-w-sm w-full shadow-2xl text-center animate-fade-in">
+            <div class="w-12 h-12 bg-red-950/80 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 text-xl border border-red-900/50">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white uppercase tracking-wider mb-2">Tamatkan Permainan?</h3>
+            <p class="text-gray-400 text-xs mb-6 leading-relaxed">Adakah anda pasti mahu menamatkan permainan ini sekarang? Statistik semasa akan dipaparkan.</p>
+            <div class="flex gap-3">
+                <button onclick="closeEndGameModal()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 py-3 rounded-lg font-semibold text-xs tracking-wider uppercase transition">
+                    Batal
+                </button>
+                <button onclick="forceEndGame()" class="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-bold text-xs tracking-wider uppercase transition">
+                    Ya, Tamatkan
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-[#0a0a0a] border-t border-gray-900 p-6 text-center text-xs text-gray-500 mt-auto flex-none flex flex-col gap-1">
         <p>Dibangunkan untuk <span class="font-bold text-gray-400">TVET MARA REMBAU</span> oleh <a href="https://www.ilmuniaga.com" target="_blank" class="text-red-600 hover:text-red-500 font-bold transition">ILMU NIAGA</a>.</p>
@@ -305,14 +337,13 @@
 
     <script>
         // Sediakan synthesizer untuk efek bunyi tanpa fail luaran.
-        // Bunyi 'miss' (kwek kwek kwek - bunyi seperti itik kartun)
         const synthMiss = new Tone.MembraneSynth({
             pitchDecay: 0.05,
             octaves: 3,
             oscillator: { type: "sine" },
             envelope: { attack: 0.001, decay: 0.2, sustain: 0, release: 0.1 }
         }).toDestination();
-        synthMiss.volume.value = 0; // Kelantangan dikuatkan semula
+        synthMiss.volume.value = 0;
 
         const synthCout = new Tone.PolySynth(Tone.Synth, {
             oscillator: { type: "sine" },
@@ -320,12 +351,10 @@
         }).toDestination();
         synthCout.volume.value = 0;
 
-        // Bunyi baru untuk Tahniah (Fanfare Kemenangan)
         const synthWin = new Tone.PolySynth(Tone.FMSynth).toDestination();
-        synthWin.volume.value = 5; // Bunyi lebih kuat sikit untuk efek 'surprise'
+        synthWin.volume.value = 5;
 
         async function playMissSound() {
-            // Bunyi 'miss' (kwek kwek kwek)
             if(Tone.context.state !== 'running') await Tone.start();
             const now = Tone.now();
             synthMiss.triggerAttackRelease("F3", "16n", now);
@@ -334,17 +363,14 @@
         }
 
         async function playCheckoutSound() {
-            // Bunyi kemenangan ceria (Chime / Bell)
             if(Tone.context.state !== 'running') await Tone.start();
             const now = Tone.now();
             synthCout.triggerAttackRelease(["C5", "E5", "G5", "C6"], "8n", now);
         }
 
         async function playWinSound() {
-            // Bunyi 'Surprise Congratulation' (Tadaaa!)
             if(Tone.context.state !== 'running') await Tone.start();
             const now = Tone.now();
-            // Kord muzik menaik
             synthWin.triggerAttackRelease(["C4", "E4", "G4"], "8n", now);
             synthWin.triggerAttackRelease(["E4", "G4", "C5"], "8n", now + 0.15);
             synthWin.triggerAttackRelease(["G4", "C5", "E5"], "8n", now + 0.30);
@@ -357,8 +383,10 @@
         let currentPlayerIndex = 0;
         let currentTarget = null;
         let currentDart = 1;
+        
+        // Simpan sejarah balingan giliran semasa untuk fungsi 'Padam' (Undo)
+        let currentTurnThrows = []; // Menyimpan senarai objek { type: 'miss'/'cout', targetAssigned: ... }
 
-        // Palet Warna untuk Pemain (Lebih cerah untuk latar hitam)
         const playerColors = ['#ff4d4d', '#4da6ff', '#4dff88', '#ffcc00', '#c266ff', '#ff66b3', '#00cccc', '#ff9933'];
 
         // --- Navigation ---
@@ -370,12 +398,20 @@
             const el = document.getElementById(screenId);
             el.classList.remove('hidden');
             el.classList.add('flex');
+
+            // Papar atau sembunyikan button Tamatkan Permainan di top bar
+            const topControls = document.getElementById('game-controls-top');
+            if (screenId === 'screen-game') {
+                topControls.classList.remove('hidden');
+            } else {
+                topControls.classList.add('hidden');
+            }
         }
 
         // --- Setup Functions ---
         function setupPlayerNames() {
             const count = parseInt(document.getElementById('player-count').value);
-            if(count < 1) return alert('Sila masukkan sekurang-kurangnya 1 pemain.');
+            if(count < 1) return; // Silent validation without alert()
             
             const container = document.getElementById('player-inputs-container');
             container.innerHTML = '';
@@ -397,7 +433,6 @@
             document.getElementById('step-1').classList.remove('hidden');
         }
 
-        // Generate Target List (D1-D20 + Bull + Bullseye)
         function initTargets() {
             targets = [];
             for (let i = 1; i <= 20; i++) {
@@ -424,11 +459,9 @@
             initTargets();
             showScreen('screen-cointoss');
             
-            // Random first player
             currentPlayerIndex = Math.floor(Math.random() * players.length);
             const firstPlayer = players[currentPlayerIndex];
 
-            // Wait for CSS animation (2s)
             setTimeout(() => {
                 const resultDiv = document.getElementById('cointoss-result');
                 const nameEl = document.getElementById('first-player-name');
@@ -440,10 +473,10 @@
 
         // --- Game Logic ---
         function startGame() {
-            // Activate Audio Context on first user interaction
             if(Tone.context.state !== 'running') Tone.start();
             
             currentDart = 1;
+            currentTurnThrows = [];
             renderGameScreen();
             showScreen('screen-game');
         }
@@ -458,12 +491,10 @@
         function renderGameScreen() {
             const player = players[currentPlayerIndex];
             
-            // Update Player Name
             const nameEl = document.getElementById('ui-player-name');
             nameEl.innerText = player.name;
             nameEl.style.color = player.color;
 
-            // Update Target
             if (!currentTarget) {
                 currentTarget = pickRandomTarget();
             }
@@ -475,21 +506,27 @@
                 targetEl.innerText = "SELESAI";
             }
 
-            // Reset Dart UI
+            // Reset Dart UI boxes
             for(let i=1; i<=3; i++) {
                 const box = document.getElementById(`box-dart-${i}`);
                 box.innerHTML = '';
                 box.className = "w-11 h-11 border border-gray-600 bg-[#151515] rounded-md flex items-center justify-center text-lg transition-all duration-300 shadow-inner";
             }
             currentDart = 1;
+            currentTurnThrows = [];
 
-            // Reset Buttons
+            // Reset Action Buttons
             const btnMiss = document.getElementById('btn-action-miss');
             const btnCout = document.getElementById('btn-action-cout');
+            const btnUndo = document.getElementById('btn-action-undo');
+            
             btnMiss.disabled = false;
             btnCout.disabled = false;
+            btnUndo.disabled = false;
             btnMiss.classList.remove('opacity-50', 'cursor-not-allowed');
             btnCout.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnUndo.classList.remove('opacity-50', 'cursor-not-allowed');
+            
             document.getElementById('turn-complete-container').classList.add('hidden');
 
             updateTargetGrid();
@@ -501,28 +538,33 @@
             const box = document.getElementById(`box-dart-${currentDart}`);
             const currentPlayer = players[currentPlayerIndex];
 
-            // Tambah dart thrown untuk pemain ini
             currentPlayer.totalDartsThrown++;
+
+            let assignedTargetAtThisThrow = currentTarget;
 
             if (type === 'miss') {
                 playMissSound();
                 box.innerHTML = '<i class="fa-solid fa-xmark text-gray-500 text-sm"></i>';
                 box.className = "w-11 h-11 border border-gray-700 bg-[#222] rounded-md flex items-center justify-center transition-all duration-300 shadow-inner";
+                
+                // Simpan sejarah untuk undo
+                currentTurnThrows.push({ type: 'miss', target: assignedTargetAtThisThrow });
             } else if (type === 'cout') {
                 playCheckoutSound();
                 box.innerHTML = '<i class="fa-solid fa-check text-white text-sm"></i>';
                 box.className = `w-11 h-11 rounded-md flex items-center justify-center transition-all duration-300 bg-[#e62e2e] shadow-[0_0_12px_rgba(220,38,38,0.6)]`;
 
-                // Update Target Data
                 currentTarget.completed = true;
                 currentTarget.completedBy = currentPlayer.name;
                 currentTarget.color = currentPlayer.color;
                 currentPlayer.checkouts++;
 
+                // Simpan sejarah untuk undo
+                currentTurnThrows.push({ type: 'cout', target: assignedTargetAtThisThrow });
+
                 confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
                 updateTargetGrid();
 
-                // Cari target seterusnya kalau masih ada dart
                 currentTarget = pickRandomTarget();
                 if (currentTarget) {
                     document.getElementById('ui-target-name').innerText = currentTarget.label;
@@ -535,34 +577,92 @@
 
             // Jika dah baling 3 kali ATAU target habis
             if (currentDart > 3 || !currentTarget) {
-                const btnMiss = document.getElementById('btn-action-miss');
-                const btnCout = document.getElementById('btn-action-cout');
-                btnMiss.disabled = true;
-                btnCout.disabled = true;
-                btnMiss.classList.add('opacity-50', 'cursor-not-allowed');
-                btnCout.classList.add('opacity-50', 'cursor-not-allowed');
-                document.getElementById('turn-complete-container').classList.remove('hidden');
+                lockThrowButtonsForTurn();
             }
         }
 
-        function nextTurn() {
-            // Tambah rekod giliran (turns) pemain ini
-            players[currentPlayerIndex].turns++;
+        function lockThrowButtonsForTurn() {
+            const btnMiss = document.getElementById('btn-action-miss');
+            const btnCout = document.getElementById('btn-action-cout');
+            btnMiss.disabled = true;
+            btnCout.disabled = true;
+            btnMiss.classList.add('opacity-50', 'cursor-not-allowed');
+            btnCout.classList.add('opacity-50', 'cursor-not-allowed');
+            document.getElementById('turn-complete-container').classList.remove('hidden');
+        }
 
+        // --- Fungsi Button Padam (Undo Balingan Semasa) ---
+        function undoThrow() {
+            if (currentTurnThrows.length === 0) return; // Tiada balingan untuk dipadam dalam giliran ini
+
+            // Ambil balingan terakhir dalam giliran ini
+            const lastThrow = currentTurnThrows.pop();
+            const currentPlayer = players[currentPlayerIndex];
+
+            // Kurangkan bilangan total darts thrown pemain
+            currentPlayer.totalDartsThrown--;
+
+            // Undurkan nombor dart (currentDart kembali ke sebelumnya)
+            currentDart--;
+            const box = document.getElementById(`box-dart-${currentDart}`);
+            box.innerHTML = '';
+            box.className = "w-11 h-11 border border-gray-600 bg-[#151515] rounded-md flex items-center justify-center text-lg transition-all duration-300 shadow-inner";
+
+            // Jika balingan yang dipadam tadi adalah 'cout' (Checkout berjaya)
+            if (lastThrow.type === 'cout') {
+                currentPlayer.checkouts--;
+                
+                // Kembalikan status target kepada belum selesai
+                lastThrow.target.completed = false;
+                lastThrow.target.completedBy = null;
+                lastThrow.target.color = null;
+
+                // Kembalikan currentTarget kepada target yang dipadam tadi
+                currentTarget = lastThrow.target;
+                document.getElementById('ui-target-name').innerText = currentTarget.label;
+
+                updateTargetGrid();
+            }
+
+            // Aktifkan semula butang balingan sekiranya ia sebelum ini dikunci kerana sudah 3 dart
+            const btnMiss = document.getElementById('btn-action-miss');
+            const btnCout = document.getElementById('btn-action-cout');
+            btnMiss.disabled = false;
+            btnCout.disabled = false;
+            btnMiss.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnCout.classList.remove('opacity-50', 'cursor-not-allowed');
+            
+            // Sembunyikan semula butang "Selesai Giliran"
+            document.getElementById('turn-complete-container').classList.add('hidden');
+        }
+
+        function nextTurn() {
             if (checkGameOver()) return;
 
-            // Tukar ke pemain seterusnya
             currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
-            
-            // Generate paparan untuk pemain baru
             renderGameScreen();
+        }
+
+        // --- Fungsi Button Tamatkan Permainan ---
+        function confirmEndGame() {
+            document.getElementById('modal-end-game').classList.remove('hidden');
+            document.getElementById('modal-end-game').classList.add('flex');
+        }
+
+        function closeEndGameModal() {
+            document.getElementById('modal-end-game').classList.add('hidden');
+            document.getElementById('modal-end-game').classList.remove('flex');
+        }
+
+        function forceEndGame() {
+            closeEndGameModal();
+            showResults(true); // true menandakan game ditamatkan awal secara manual
         }
 
         function updateTargetGrid() {
             const grid = document.getElementById('target-grid');
             grid.innerHTML = '';
             
-            // D1-D20
             const regularTargets = targets.filter(t => t.id !== 'BULL' && t.id !== 'BULLSEYE');
             regularTargets.forEach(t => {
                 const div = document.createElement('div');
@@ -583,7 +683,6 @@
                 grid.appendChild(div);
             });
 
-            // Bull
             const bull = targets.find(t => t.id === 'BULL');
             const bullDiv = document.createElement('div');
             bullDiv.className = `col-span-2 flex flex-col items-center justify-center rounded-md bg-[#168a3f] shadow-sm ${bull.completed ? 'border-2' : ''} py-3`;
@@ -594,7 +693,6 @@
             `;
             grid.appendChild(bullDiv);
 
-            // Bullseye
             const bullseye = targets.find(t => t.id === 'BULLSEYE');
             const bullseyeDiv = document.createElement('div');
             bullseyeDiv.className = `col-span-2 flex flex-col items-center justify-center rounded-md bg-[#dc2626] shadow-sm ${bullseye.completed ? 'border-2' : ''} py-3`;
@@ -609,26 +707,34 @@
         function checkGameOver() {
             const allCompleted = targets.every(t => t.completed);
             if (allCompleted) {
-                showResults();
+                showResults(false);
                 return true;
             }
             return false;
         }
 
         // --- Result Screen ---
-        function showResults() {
+        function showResults(isEarlyEnd = false) {
             showScreen('screen-result');
             
-            // Mainkan bunyi surprise congratulation
             playWinSound();
-            
             confetti({ particleCount: 300, spread: 120, origin: { y: 0.3 } });
+
+            // Kemas kini tajuk jika ditamatkan awal
+            const titleEl = document.getElementById('result-title');
+            const subtitleEl = document.getElementById('result-subtitle');
+            if (isEarlyEnd) {
+                titleEl.innerText = "PERMAINAN DITAMATKAN";
+                subtitleEl.innerText = "Keputusan Semasa Permainan";
+            } else {
+                titleEl.innerText = "🎉 TAHNIAH!";
+                subtitleEl.innerText = "Semua Target Berjaya Diselesaikan";
+            }
 
             let highestCheckout = -1;
             let winner = null;
 
             players.forEach(p => {
-                // Peratus = (C/Out / Total Darts Thrown) * 100
                 p.percentage = p.totalDartsThrown === 0 ? 0 : ((p.checkouts / p.totalDartsThrown) * 100).toFixed(1);
                 
                 if (p.checkouts > highestCheckout) {
@@ -637,12 +743,14 @@
                 }
             });
 
-            // Set Pemenang
             const winEl = document.getElementById('winner-name');
-            winEl.innerText = winner.name;
-            winEl.style.color = winner.color;
+            if (winner) {
+                winEl.innerText = winner.name;
+                winEl.style.color = winner.color;
+            } else {
+                winEl.innerText = "TIADA";
+            }
 
-            // Bina Jadual Statistik (DIUBAH KEPADA RESPONSIVE LAYOUT)
             const tbody = document.getElementById('stats-body');
             tbody.innerHTML = '';
             
@@ -651,7 +759,6 @@
                 const targetsHtml = userTargets ? userTargets : '<span class="text-gray-600 italic">Tiada</span>';
 
                 tbody.innerHTML += `
-                    <!-- Row (Grid Desktop / Card Mobile) -->
                     <div class="md:grid md:grid-cols-12 gap-2 md:items-center py-3 border-b border-gray-800 last:border-0">
                         <!-- Desktop Layout -->
                         <div class="hidden md:block col-span-3 font-bold uppercase truncate" style="color: ${p.color}">${p.name}</div>
@@ -660,7 +767,7 @@
                         <div class="hidden md:block col-span-2 text-center text-yellow-500 font-bold">${p.percentage}%</div>
                         <div class="hidden md:block col-span-3 text-right text-xs text-gray-400 break-words leading-relaxed">${targetsHtml}</div>
 
-                        <!-- Mobile Layout (Hanya muncul jika skrin kecil) -->
+                        <!-- Mobile Layout -->
                         <div class="md:hidden flex flex-col gap-2">
                             <div class="flex justify-between items-center border-b border-gray-800 pb-2">
                                 <span class="font-bold uppercase text-lg" style="color: ${p.color}">${p.name}</span>
